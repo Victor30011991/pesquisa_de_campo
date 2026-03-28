@@ -32,7 +32,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .field textarea{resize:none;height:80px;}
 .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%237A7870' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer;}
 .rota-grid{display:grid;gap:10px;}
-.rota-row{display:grid;grid-template-columns:1fr 120px;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.rota-row{display:grid;grid-template-columns:1fr 110px;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
 .rota-label{font-size:13px;color:var(--text);font-weight:500;}
 .rota-label span{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px;}
 .rota-input{background:var(--surface)!important;border:1.5px solid var(--border)!important;border-radius:8px!important;padding:9px 10px!important;text-align:right;font-size:14px!important;}
@@ -53,7 +53,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 #success .ico{font-size:48px;margin-bottom:16px;color:var(--green);}
 #success h2{font-size:22px;font-weight:600;margin-bottom:10px;}
 #success p{color:var(--muted);}
-.divider{height:1px;background:var(--border);margin:4px 0 18px;}
+.divider{height:1px;background:var(--border);margin:6px 0 18px;}
 .helper{font-size:12px;color:var(--muted);margin-bottom:14px;}
 </style>
 </head>
@@ -63,7 +63,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="header">
   <div class="tag">Parnaíba — PI</div>
   <h1>Ajude a melhorar o frete aqui perto</h1>
-  <p>Estamos pesquisando o mercado local. São poucas perguntas e sua opinião faz toda a diferença.</p>
+  <p>Poucas perguntas, resposta rápida. Sua opinião vai fazer diferença.</p>
   <div class="toggle">
     <button class="tab active" onclick="show('motorista',this)">Sou motorista</button>
     <button class="tab" onclick="show('cliente',this)">Preciso de frete</button>
@@ -72,15 +72,46 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
 
-<!-- MOTORISTA -->
+<!-- ══════════════════════════════════════
+     FORMULÁRIO — MOTORISTA
+══════════════════════════════════════ -->
 <form id="f-motorista" class="form-panel active" action="https://formspree.io/f/SEU_ID_MOTORISTA" method="POST" onsubmit="done(event)">
 <input type="hidden" name="tipo" value="motorista">
 
 <div class="card">
   <div class="card-title">Identificação</div>
   <div class="two-col">
-    <div class="field"><label>Nome</label><input type="text" name="nome" placeholder="Como te chamam?" required oninput="prog()"></div>
-    <div class="field"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="(86) 9 9999-0000" required oninput="prog()"></div>
+    <div class="field">
+      <label>Seu nome</label>
+      <input type="text" name="nome" placeholder="Como te chamam?" required oninput="prog()">
+    </div>
+    <div class="field">
+      <label>WhatsApp</label>
+      <input type="tel" name="whatsapp" placeholder="(86) 9 9999-0000" required oninput="prog()">
+    </div>
+  </div>
+  <div class="field">
+    <label>Em qual bairro ou região de Parnaíba você mora?</label>
+    <input type="text" name="bairro" placeholder="Ex: Centro, Fátima, Dirceu..." oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Você tem smartphone com internet?</label>
+    <div class="chips" id="smartphone">
+      <div class="chip" onclick="chip(this,'smartphone','smartphone_val')">Sim</div>
+      <div class="chip" onclick="chip(this,'smartphone','smartphone_val')">Sim, mas internet ruim</div>
+      <div class="chip" onclick="chip(this,'smartphone','smartphone_val')">Não</div>
+    </div>
+    <input type="hidden" id="smartphone_val" name="tem_smartphone">
+  </div>
+  <div class="field">
+    <label>Já usou algum app de frete?</label>
+    <div class="chips" id="usou_app">
+      <div class="chip" onclick="chip(this,'usou_app','usou_app_val')">Nunca</div>
+      <div class="chip" onclick="chip(this,'usou_app','usou_app_val')">Já tentei</div>
+      <div class="chip" onclick="chip(this,'usou_app','usou_app_val')">Uso às vezes</div>
+      <div class="chip" onclick="chip(this,'usou_app','usou_app_val')">Uso com frequência</div>
+    </div>
+    <input type="hidden" id="usou_app_val" name="usou_app">
   </div>
 </div>
 
@@ -89,18 +120,35 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="field">
     <label>Tipo de veículo</label>
     <div class="chips" id="veiculo">
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Moto</div>
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Saveiro / Strada</div>
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Hilux / Picape</div>
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Van / Furgão</div>
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Caminhão Médio</div>
-      <div class="chip" onclick="chip(this,'veiculo','veiculo_tipo')">Caminhão Grande</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Moto</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Saveiro / Strada</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Hilux / Picape</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Van / Furgão</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Caminhão Médio</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val')">Caminhão Grande</div>
+      <div class="chip" onclick="chip(this,'veiculo','veiculo_val');toggleOutro(this,'outro_veiculo')">Outro — especificar</div>
     </div>
-    <input type="hidden" id="veiculo_tipo" name="veiculo_tipo">
+    <input type="hidden" id="veiculo_val" name="veiculo_tipo">
+  <div id="outro_veiculo" style="display:none;margin-top:10px;">
+    <input type="text" name="veiculo_outro" placeholder="Ex: Scania Bitrem, Montana, VW Delivery..." oninput="prog()" style="width:100%;background:var(--bg);border:1.5px solid var(--green);border-radius:10px;padding:12px 14px;font-family:inherit;font-size:15px;color:var(--text);outline:none;">
+  </div>
   </div>
   <div class="field">
-    <label>Capacidade (opcional)</label>
-    <input type="text" name="capacidade" placeholder="Ex: 600 kg, 1 tonelada..." oninput="prog()">
+    <label>Marca, modelo e ano</label>
+    <input type="text" name="veiculo_modelo" placeholder="Ex: Iveco Daily 2019, Fiat Strada 2021, Scania R450..." oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Capacidade de carga (opcional)</label>
+    <input type="text" name="capacidade" placeholder="Ex: 500 kg, 1 tonelada, 3 eixos..." oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Sua habilitação está regular?</label>
+    <div class="chips" id="cnh">
+      <div class="chip" onclick="chip(this,'cnh','cnh_val')">Sim</div>
+      <div class="chip" onclick="chip(this,'cnh','cnh_val')">Não</div>
+      <div class="chip" onclick="chip(this,'cnh','cnh_val')">Prefiro não informar</div>
+    </div>
+    <input type="hidden" id="cnh_val" name="cnh_regular">
   </div>
 </div>
 
@@ -109,7 +157,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="field">
     <label>Dentro de Parnaíba</label>
     <div class="slider-row">
-      <input type="range" min="0" max="15" value="2" step="1" name="fretes_cidade" oninput="this.nextElementSibling.textContent=this.value;prog()">
+      <input type="range" min="0" max="15" value="2" step="1" name="fretes_cidade"
+        oninput="this.nextElementSibling.textContent=this.value;prog()">
       <span class="slider-num">2</span>
     </div>
   </div>
@@ -117,7 +166,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="field">
     <label>Para outras cidades</label>
     <div class="slider-row">
-      <input type="range" min="0" max="10" value="0" step="1" name="fretes_fora" oninput="this.nextElementSibling.textContent=this.value;prog()">
+      <input type="range" min="0" max="10" value="0" step="1" name="fretes_fora"
+        oninput="this.nextElementSibling.textContent=this.value;prog()">
       <span class="slider-num">0</span>
     </div>
   </div>
@@ -128,68 +178,112 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <p class="helper">Preencha as rotas que você faz. Deixe em branco as que não faz.</p>
   <div class="rota-grid">
     <div class="rota-row">
-      <div class="rota-label">Dentro de Parnaíba <span>valor mínimo</span></div>
+      <div class="rota-label">Dentro de Parnaíba<span>valor mínimo cobrado</span></div>
       <input class="rota-input" type="text" name="rota_phn_min" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Dentro de Parnaíba <span>até quantos km?</span></div>
+      <div class="rota-label">Dentro de Parnaíba<span>distância máxima atendida</span></div>
       <input class="rota-input" type="text" name="rota_phn_km" placeholder="km">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Buriti dos Lopes <span>~45 km</span></div>
+      <div class="rota-label">Parnaíba → Buriti dos Lopes<span>~45 km</span></div>
       <input class="rota-input" type="text" name="rota_buriti" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Camocim <span>~200 km</span></div>
+      <div class="rota-label">Parnaíba → Camocim<span>~200 km</span></div>
       <input class="rota-input" type="text" name="rota_camocim" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Piripiri <span>~130 km</span></div>
+      <div class="rota-label">Parnaíba → Piripiri<span>~130 km</span></div>
       <input class="rota-input" type="text" name="rota_piripiri" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Teresina <span>~340 km</span></div>
+      <div class="rota-label">Parnaíba → Teresina<span>~340 km</span></div>
       <input class="rota-input" type="text" name="rota_teresina" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Picos <span>~480 km</span></div>
+      <div class="rota-label">Parnaíba → Picos<span>~480 km</span></div>
       <input class="rota-input" type="text" name="rota_picos" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → São Luís <span>~500 km</span></div>
+      <div class="rota-label">Parnaíba → São Luís<span>~500 km</span></div>
       <input class="rota-input" type="text" name="rota_sao_luis" placeholder="R$">
     </div>
     <div class="rota-row">
-      <div class="rota-label">Parnaíba → Fortaleza <span>~600 km</span></div>
+      <div class="rota-label">Parnaíba → Fortaleza<span>~600 km</span></div>
       <input class="rota-input" type="text" name="rota_fortaleza" placeholder="R$">
     </div>
   </div>
 </div>
 
 <div class="card">
-  <div class="card-title">Sobre um app de frete</div>
+  <div class="card-title">Ajudante</div>
   <div class="field">
-    <label>Como você recebe hoje?</label>
+    <label>Você oferece ajudante junto com o frete?</label>
+    <div class="chips" id="tem_ajud">
+      <div class="chip" onclick="chip(this,'tem_ajud','tem_ajud_val')">Sim, sempre</div>
+      <div class="chip" onclick="chip(this,'tem_ajud','tem_ajud_val')">Às vezes</div>
+      <div class="chip" onclick="chip(this,'tem_ajud','tem_ajud_val')">Não ofereço</div>
+    </div>
+    <input type="hidden" id="tem_ajud_val" name="oferece_ajudante">
+  </div>
+  <div class="field">
+    <label>O ajudante é você mesmo ou outra pessoa?</label>
+    <div class="chips" id="quem_ajud">
+      <div class="chip" onclick="chip(this,'quem_ajud','quem_ajud_val')">Eu mesmo</div>
+      <div class="chip" onclick="chip(this,'quem_ajud','quem_ajud_val')">Contrato outra pessoa</div>
+      <div class="chip" onclick="chip(this,'quem_ajud','quem_ajud_val')">Não aplica</div>
+    </div>
+    <input type="hidden" id="quem_ajud_val" name="quem_ajudante">
+  </div>
+  <div class="field">
+    <label>Quanto você cobra pelo ajudante?</label>
+    <input type="text" name="valor_ajudante" placeholder="Ex: R$ 60 por frete" oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Com que frequência o cliente pede ajudante?</label>
+    <div class="chips" id="freq_ajud">
+      <div class="chip" onclick="chip(this,'freq_ajud','freq_ajud_val')">Quase sempre</div>
+      <div class="chip" onclick="chip(this,'freq_ajud','freq_ajud_val')">Às vezes</div>
+      <div class="chip" onclick="chip(this,'freq_ajud','freq_ajud_val')">Raramente</div>
+    </div>
+    <input type="hidden" id="freq_ajud_val" name="freq_pedido_ajudante">
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Pagamento e rotina</div>
+  <div class="field">
+    <label>Como você recebe pelo frete hoje?</label>
     <div class="chips" id="pgto">
-      <div class="chip" onclick="chip(this,'pgto','pgto_val',true)">Dinheiro</div>
+      <div class="chip" onclick="chip(this,'pgto','pgto_val',true)">Dinheiro na hora</div>
       <div class="chip" onclick="chip(this,'pgto','pgto_val',true)">PIX</div>
       <div class="chip" onclick="chip(this,'pgto','pgto_val',true)">Transferência</div>
     </div>
     <input type="hidden" id="pgto_val" name="forma_pagamento">
   </div>
   <div class="field">
-    <label>O que mais te incomoda hoje?</label>
+    <label>Você aceita receber só após a entrega concluída?</label>
+    <div class="chips" id="pos_entrega">
+      <div class="chip" onclick="chip(this,'pos_entrega','pos_entrega_val')">Sim, sem problema</div>
+      <div class="chip" onclick="chip(this,'pos_entrega','pos_entrega_val')">Prefiro metade antes</div>
+      <div class="chip" onclick="chip(this,'pos_entrega','pos_entrega_val')">Prefiro tudo antes</div>
+    </div>
+    <input type="hidden" id="pos_entrega_val" name="aceita_pos_entrega">
+  </div>
+  <div class="field">
+    <label>O que mais te incomoda no seu trabalho hoje?</label>
     <div class="chips" id="dorm">
       <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Falta de clientes</div>
       <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Preço incerto</div>
       <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Receber atrasado</div>
-      <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Muita concorrência</div>
+      <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Concorrência</div>
       <div class="chip" onclick="chip(this,'dorm','dorm_val',true)">Voltar vazio</div>
     </div>
     <input type="hidden" id="dorm_val" name="dor_principal">
   </div>
   <div class="field">
-    <label>Qual comissão aceitaria pagar por frete realizado?</label>
+    <label>Qual comissão aceitaria pagar por frete realizado pelo app?</label>
     <div class="chips" id="com">
       <div class="chip" onclick="chip(this,'com','com_val')">Mensalidade fixa</div>
       <div class="chip" onclick="chip(this,'com','com_val')">Até 10%</div>
@@ -199,7 +293,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="com_val" name="comissao_aceita">
   </div>
   <div class="field">
-    <label>Comentário ou sugestão (opcional)</label>
+    <label>Algum comentário ou sugestão? (opcional)</label>
     <textarea name="comentario" placeholder="Fique à vontade..."></textarea>
   </div>
 </div>
@@ -208,15 +302,27 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <p class="note">Suas respostas são anônimas e usadas apenas para fins de pesquisa de mercado.</p>
 </form>
 
-<!-- CLIENTE -->
+<!-- ══════════════════════════════════════
+     FORMULÁRIO — CLIENTE
+══════════════════════════════════════ -->
 <form id="f-cliente" class="form-panel" action="https://formspree.io/f/SEU_ID_CLIENTE" method="POST" onsubmit="done(event)">
 <input type="hidden" name="tipo" value="cliente">
 
 <div class="card">
   <div class="card-title">Identificação</div>
   <div class="two-col">
-    <div class="field"><label>Nome</label><input type="text" name="nome" placeholder="Como te chamam?" required oninput="prog()"></div>
-    <div class="field"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="(86) 9 9999-0000" required oninput="prog()"></div>
+    <div class="field">
+      <label>Seu nome</label>
+      <input type="text" name="nome" placeholder="Como te chamam?" required oninput="prog()">
+    </div>
+    <div class="field">
+      <label>WhatsApp</label>
+      <input type="tel" name="whatsapp" placeholder="(86) 9 9999-0000" required oninput="prog()">
+    </div>
+  </div>
+  <div class="field">
+    <label>Bairro ou região em Parnaíba</label>
+    <input type="text" name="bairro" placeholder="Ex: Centro, Fátima, Dirceu..." oninput="prog()">
   </div>
   <div class="field">
     <label>Você é...</label>
@@ -244,7 +350,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="freq_val" name="frequencia">
   </div>
   <div class="field">
-    <label>Que veículo você costuma contratar?</label>
+    <label>Que tipo de veículo você costuma precisar?</label>
     <div class="chips" id="veic">
       <div class="chip" onclick="chip(this,'veic','veic_val',true)">Moto</div>
       <div class="chip" onclick="chip(this,'veic','veic_val',true)">Carro pequeno</div>
@@ -254,15 +360,59 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="veic_val" name="veiculo_preferido">
   </div>
   <div class="field">
-    <label>Valor médio que você paga por frete em Parnaíba hoje?</label>
+    <label>Qual valor médio você paga por frete em Parnaíba hoje?</label>
     <input type="text" name="valor_medio" placeholder="Ex: R$ 80 a R$ 150" oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Você prefere agendar o frete com antecedência ou chamar na hora?</label>
+    <div class="chips" id="agend">
+      <div class="chip" onclick="chip(this,'agend','agend_val')">Agendar antes</div>
+      <div class="chip" onclick="chip(this,'agend','agend_val')">Chamar na hora</div>
+      <div class="chip" onclick="chip(this,'agend','agend_val')">Tanto faz</div>
+    </div>
+    <input type="hidden" id="agend_val" name="prefere_agendamento">
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Ajudante</div>
+  <div class="field">
+    <label>Você costuma precisar de ajudante para carregar ou descarregar?</label>
+    <div class="chips" id="precisa_ajud">
+      <div class="chip" onclick="chip(this,'precisa_ajud','precisa_ajud_val')">Sim, quase sempre</div>
+      <div class="chip" onclick="chip(this,'precisa_ajud','precisa_ajud_val')">Às vezes</div>
+      <div class="chip" onclick="chip(this,'precisa_ajud','precisa_ajud_val')">Raramente</div>
+      <div class="chip" onclick="chip(this,'precisa_ajud','precisa_ajud_val')">Nunca</div>
+    </div>
+    <input type="hidden" id="precisa_ajud_val" name="precisa_ajudante">
+  </div>
+  <div class="field">
+    <label>Você prefere que o motorista já traga o ajudante ou você mesmo arranja?</label>
+    <div class="chips" id="pref_ajud">
+      <div class="chip" onclick="chip(this,'pref_ajud','pref_ajud_val')">Que o motorista traga</div>
+      <div class="chip" onclick="chip(this,'pref_ajud','pref_ajud_val')">Eu mesmo arrumo</div>
+      <div class="chip" onclick="chip(this,'pref_ajud','pref_ajud_val')">Tanto faz</div>
+    </div>
+    <input type="hidden" id="pref_ajud_val" name="preferencia_ajudante">
+  </div>
+  <div class="field">
+    <label>Quanto você pagaria pelo ajudante por frete?</label>
+    <input type="text" name="valor_ajudante" placeholder="Ex: R$ 50 a R$ 80" oninput="prog()">
+  </div>
+  <div class="field">
+    <label>Já teve problema por falta de ajudante num frete?</label>
+    <div class="chips" id="prob_ajud">
+      <div class="chip" onclick="chip(this,'prob_ajud','prob_ajud_val')">Sim</div>
+      <div class="chip" onclick="chip(this,'prob_ajud','prob_ajud_val')">Não</div>
+    </div>
+    <input type="hidden" id="prob_ajud_val" name="problema_ajudante">
   </div>
 </div>
 
 <div class="card">
   <div class="card-title">Como você contrata hoje</div>
   <div class="field">
-    <label>Como você acha um motorista?</label>
+    <label>Como você encontra um motorista?</label>
     <div class="chips" id="como">
       <div class="chip" onclick="chip(this,'como','como_val',true)">Indicação de amigos</div>
       <div class="chip" onclick="chip(this,'como','como_val',true)">Grupo de WhatsApp</div>
@@ -273,7 +423,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="como_val" name="como_encontra">
   </div>
   <div class="field">
-    <label>Qual o maior problema hoje?</label>
+    <label>Qual o maior problema ao contratar frete hoje?</label>
     <div class="chips" id="probc">
       <div class="chip" onclick="chip(this,'probc','probc_val',true)">Não sei o preço justo</div>
       <div class="chip" onclick="chip(this,'probc','probc_val',true)">Difícil achar motorista</div>
@@ -282,6 +432,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="chip" onclick="chip(this,'probc','probc_val',true)">Forma de pagamento</div>
     </div>
     <input type="hidden" id="probc_val" name="problema_principal">
+  </div>
+  <div class="field">
+    <label>Já teve um problema sério com um frete? O que aconteceu?</label>
+    <textarea name="problema_real" placeholder="Conte brevemente se quiser..."></textarea>
   </div>
 </div>
 
@@ -297,7 +451,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="usaria_val" name="usaria_app">
   </div>
   <div class="field">
-    <label>O que seria mais importante para você?</label>
+    <label>Pagaria um pouco mais por um motorista avaliado e com rastreamento?</label>
+    <div class="chips" id="pagaria_mais">
+      <div class="chip" onclick="chip(this,'pagaria_mais','pagaria_mais_val')">Sim, vale a segurança</div>
+      <div class="chip" onclick="chip(this,'pagaria_mais','pagaria_mais_val')">Só se for barato</div>
+      <div class="chip" onclick="chip(this,'pagaria_mais','pagaria_mais_val')">Não, preço é o que importa</div>
+    </div>
+    <input type="hidden" id="pagaria_mais_val" name="pagaria_mais">
+  </div>
+  <div class="field">
+    <label>O que seria mais importante para você no app?</label>
     <div class="chips" id="import">
       <div class="chip" onclick="chip(this,'import','import_val',true)">Preço justo</div>
       <div class="chip" onclick="chip(this,'import','import_val',true)">Rapidez</div>
@@ -308,7 +471,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <input type="hidden" id="import_val" name="mais_importante">
   </div>
   <div class="field">
-    <label>Comentário ou sugestão (opcional)</label>
+    <label>Algum comentário ou sugestão? (opcional)</label>
     <textarea name="comentario" placeholder="Fique à vontade..."></textarea>
   </div>
 </div>
@@ -328,8 +491,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 let cur='motorista';
 function show(t,b){cur=t;document.querySelectorAll('.form-panel').forEach(f=>f.classList.remove('active'));document.getElementById('f-'+t).classList.add('active');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');prog();}
 function chip(el,g,hid,multi){if(!multi)document.querySelectorAll('#'+g+' .chip').forEach(c=>c.classList.remove('on'));el.classList.toggle('on');const v=[...document.querySelectorAll('#'+g+' .chip.on')].map(c=>c.textContent).join(', ');document.getElementById(hid).value=v;prog();}
-function prog(){const f=document.getElementById('f-'+cur);const inp=f.querySelectorAll('input[type=text],input[type=tel]');let n=0;inp.forEach(i=>{if(i.value.trim())n++;});const c=f.querySelectorAll('.chip.on').length;const pct=Math.min(96,Math.round(((n+c)/(inp.length+5))*100));document.getElementById('bar').style.width=pct+'%';}
+function prog(){const f=document.getElementById('f-'+cur);const inp=f.querySelectorAll('input[type=text],input[type=tel]');let n=0;inp.forEach(i=>{if(i.value.trim())n++;});const c=f.querySelectorAll('.chip.on').length;const pct=Math.min(96,Math.round(((n+c)/(inp.length+6))*100));document.getElementById('bar').style.width=pct+'%';}
 function done(e){e.preventDefault();const form=e.target;if(form.action.includes('SEU_ID')){ok();return;}fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}}).then(r=>{if(r.ok)ok();else alert('Erro ao enviar. Tente novamente.');}).catch(ok);}
+function toggleOutro(el,id){var w=document.getElementById(id);if(el.classList.contains("on"))w.style.display="block";else w.style.display="none";}
 function ok(){document.querySelector('.header').style.display='none';document.querySelector('.progress-track').style.display='none';['f-motorista','f-cliente'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById('bar').style.width='100%';document.getElementById('success').style.display='block';}
 </script>
 </body>
